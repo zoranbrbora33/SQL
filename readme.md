@@ -8,8 +8,14 @@ Note: I used PostgreSQL to solve the problems in the book.
 
 ## Table of Contents
 
-- [Chapters](#chapters)
 - [Repository Structure](#repository-structure)
+- [Chapters](#chapters)
+
+## Repository Structure
+
+- **Databases**: Contains the databases from the book.
+- **Schemas**: Contains the schemas for the databases.
+- **Solutions**: Contains the solutions to the problems in the book, implemented in PostgreSQL.
 
 ## Chapters
 
@@ -32,9 +38,3 @@ Note: I used PostgreSQL to solve the problems in the book.
 17. Chapter 20: Using Unlinked Data and "Driver" Tables
 18. Chapter 21: Performing Complex Calculations on Groups
 19. Chapter 22: Partitioning Data into Windows
-
-## Repository Structure
-
-- **Databases**: Contains the databases from the book.
-- **Schemas**: Contains the schemas for the databases.
-- **Solutions**: Contains the solutions to the problems in the book, implemented in PostgreSQL.
