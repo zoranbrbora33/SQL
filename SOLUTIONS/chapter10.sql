@@ -1,6 +1,6 @@
 --- SALES DATABASE ---
 
-/* “. “List the customers who ordered a helmet together with the vendors who provide helmets.”*/
+/* “1. “List the customers who ordered a helmet together with the vendors who provide helmets.”*/
 SELECT customer.cust AS name, customer.product, 'customer' AS class
 FROM (SELECT (cust.custfirstname || ' ' || cust.custlastname) as cust, p.productname AS product
 	 FROM customers AS cust
