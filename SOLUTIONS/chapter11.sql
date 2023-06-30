@@ -24,6 +24,7 @@ FROM order_details);
 
 
 --- ENTERTAINMENT DATABASE ---
+
 /* “1. “Show me all entertainers and the count of each entertainer’s engagements.”*/
 SELECT entstagename AS entertainer,
 (SELECT COUNT(*) AS num_of_concerts
