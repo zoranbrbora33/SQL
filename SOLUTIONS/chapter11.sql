@@ -14,3 +14,10 @@ WHERE customers.customerid IN
 INNER JOIN order_details ON order_details.ordernumber = orders.ordernumber
 INNER JOIN products ON products.productnumber = order_details.productnumber
 WHERE products.productnumber IN (6));
+
+/* “3. “What products have never been ordered?”*/
+SELECT productname
+FROM products
+WHERE products.productnumber NOT IN
+(SELECT order_details.productnumber
+FROM order_details);
