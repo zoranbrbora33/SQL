@@ -4,7 +4,7 @@ This repository contains the solutions to problems presented in the book "SQL fo
 
 I will add solutions to this branch as problems are finished.
 
-Note: I used PostgreSQL to solve the problems in the book.
+Note: I used PostgreSQL, pgAdmin 4 to solve the problems in the book.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ Note: I used PostgreSQL to solve the problems in the book.
 
 - **Databases**: Contains the databases from the book.
 - **Schemas**: Contains the schemas for the databases.
-- **Solutions**: Contains the solutions to the problems in the book, implemented in PostgreSQL.
+- **Solutions**: Contains the solutions to the problems in the book, implemented in PostgreSQL, pgAdmin 4.
 
 ## Chapters
 
