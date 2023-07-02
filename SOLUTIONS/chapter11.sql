@@ -92,3 +92,28 @@ ORDER BY 1;
 
 
 --- BOWLING LEAGUE DATABASE ---
+
+/* “1. “Show me all the bowlers and a count of games each bowled.”*/
+SELECT (bowlerfirstname || ' ' || bowlerlastname) AS bowler,
+(SELECT COUNT(bs.bowlerid)
+FROM bowler_scores AS bs
+WHERE bowlers.bowlerid = bs.bowlerid)
+FROM bowlers;
+
+/* “2. “List all the bowlers who have a raw score that’s less than all of the other bowlers
+               on the same team.”*/
+SELECT DISTINCT (bowlerfirstname || ' ' || bowlerlastname) AS bowler
+FROM bowlers AS b
+INNER JOIN bowler_scores AS bs
+ON bs.bowlerid = b.bowlerid
+INNER JOIN teams AS t
+ON t.teamid = b.teamid
+WHERE bs.rawscore < ALL
+(SELECT bs2.rawscore
+FROM bowler_scores AS bs2
+INNER JOIN bowlers AS b2
+ON b2.bowlerid = bs2.bowlerid
+INNER JOIN teams AS t2
+ON t2.teamid = b2.teamid
+WHERE bs.bowlerid <> bs2.bowlerid
+AND t.teamid = t2.teamid);
