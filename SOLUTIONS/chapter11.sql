@@ -32,3 +32,28 @@ FROM engagements
 WHERE entertainers.entertainerid = engagements.entertainerid)
 FROM entertainers
 ORDER BY 2 DESC;
+
+/* “2. “List customers who have booked entertainers who play country or country rock.”*/
+SELECT  DISTINCT(custfirstname || ' ' || custlastname) AS customer
+FROM customers AS c
+INNER JOIN engagements AS e ON c.customerid = e.customerid
+WHERE e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+WHERE es.styleid IN (6, 11));
+
+/* “3. “Find the entertainers who played engagements for customers Berg or Hallmark.”*/
+SELECT entstagename
+FROM entertainers
+WHERE entertainers.entertainerid IN -- or using 'some' => WHERE entertainers.entertainerid = SOME
+(SELECT e.entertainerid
+FROM engagements AS e
+INNER JOIN customers ON customers.customerid = e.customerid
+WHERE customers.custlastname IN ('Berg', 'Hallmark'));
+
+/* “4. “Display agents who haven’t booked an entertainer.”*/
+SELECT (agtfirstname || ' ' || agtlastname) AS agent
+FROM agents
+WHERE agents.agentid NOT IN
+(SELECT e.agentid 
+FROM engagements AS e);
