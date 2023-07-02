@@ -117,3 +117,22 @@ INNER JOIN teams AS t2
 ON t2.teamid = b2.teamid
 WHERE bs.bowlerid <> bs2.bowlerid
 AND t.teamid = t2.teamid);
+
+
+--- RECIPES DATABASE ---
+
+/* “1. “Show me the types of recipes and the count of recipes in each type.”*/
+SELECT rc.recipeclassdescription,
+(SELECT COUNT (*)
+FROM recipes AS r
+WHERE r.recipeclassid = rc.recipeclassid)
+FROM recipe_classes AS rc
+ORDER BY 2 DESC;
+
+/* “2. “List the ingredients that are used in some recipe where the measurement amount in
+               the recipe is not the default measurement amount.”*/
+SELECT DISTINCT ingredientname
+FROM ingredients AS i
+INNER JOIN recipe_ingredients AS rc
+ON rc.ingredientid = i.ingredientid
+WHERE i.measureamountid <> rc.measureamountid;
