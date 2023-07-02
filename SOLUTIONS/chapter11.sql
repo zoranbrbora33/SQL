@@ -89,3 +89,6 @@ WHERE subjects.subjectid IN
 FROM classes
 WHERE classes.wednesdayschedule = 1)
 ORDER BY 1;
+
+
+--- BOWLING LEAGUE DATABASE ---
