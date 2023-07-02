@@ -43,3 +43,23 @@ WHERE startdate IN
 (SELECT MIN(startdate)
 FROM engagements
 WHERE EXTRACT(MONTH FROM startdate) = 10);
+
+
+--- SCHOOL DATABASE ---
+
+/* “1. “What is the current average class duration?”*/
+SELECT ROUND(AVG(duration), 2)
+FROM classes;
+
+/* “2. “List the last name and first name of each staff member who has been with us since
+               the earliest hire date.”*/
+SELECT stffirstname, stflastname
+FROM staff
+WHERE datehired IN
+(SELECT MIN(datehired)
+FROM staff);
+
+/* “3. “How many classes are held in room 3346?”*/
+SELECT COUNT(classid) 
+FROM classes
+WHERE classroomid = 3346;
