@@ -63,3 +63,14 @@ FROM staff);
 SELECT COUNT(classid) 
 FROM classes
 WHERE classroomid = 3346;
+
+
+--- BOWLING LEAGUE DATABASE ---
+
+/* “1. “What is the largest handicap held by any bowler at the current time?”*/
+--- I don't know anything about bowling, so this is probably not correct ---
+SELECT MAX(0.9 * (200 - avg)) AS max_handicap
+FROM (SELECT AVG(rawscore) AS avg
+      FROM bowler_scores) AS score;
+
+/* “2. “Which locations hosted tournaments on the earliest tournament date?”*/
