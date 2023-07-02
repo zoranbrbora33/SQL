@@ -68,9 +68,39 @@ WHERE classroomid = 3346;
 --- BOWLING LEAGUE DATABASE ---
 
 /* “1. “What is the largest handicap held by any bowler at the current time?”*/
---- I don't know anything about bowling, so this is probably not correct ---
 SELECT MAX(0.9 * (200 - avg)) AS max_handicap
 FROM (SELECT AVG(rawscore) AS avg
       FROM bowler_scores) AS score;
 
 /* “2. “Which locations hosted tournaments on the earliest tournament date?”*/
+SELECT tourneylocation AS tournament
+FROM tournaments
+WHERE tourneydate IN
+(SELECT MIN(tourneydate)
+FROM tournaments);
+
+/* “3. “What is the last tournament date we have on our schedule?”*/
+SELECT MAX(tourneydate)
+FROm tournaments;
+
+--- RECIPES DATABASE ---
+
+/* “1. “Which recipe requires the most cloves of garlic?”*/
+SELECT recipetitle AS recipe
+FROM recipes AS r
+INNER JOIN recipe_ingredients AS ri
+ON ri.recipeid = r.recipeid
+WHERE (measureamountid * amount) =
+(SELECT MAX(measureamountid * amount)
+FROM recipe_ingredients
+WHERE ingredientid = 9);
+
+/* “2. “Count the number of main course recipes.”*/
+SELECT COUNT(recipeid) 
+FROM recipes
+WHERE recipeclassid = 1;
+
+/* “3. “Calculate the total number of teaspoons of salt in all recipes.”*/
+SELECT SUM(amount)
+FROM recipe_ingredients
+WHERE ingredientid = 11;
