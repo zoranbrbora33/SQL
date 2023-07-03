@@ -118,3 +118,43 @@ LEFT JOIN faculty_classes AS fc
 ON fc.staffid = s.staffid
 GROUP BY s.stffirstname, s.stflastname
 ORDER BY 3 DESC;
+
+
+--- BOWLING LEAGUE DATABASE ---
+
+/* “1. “Do any team captains have a raw score that is higher than any other member of the
+               team?”*/
+SELECT b.bowlerfirstname, b.bowlerlastname, MAX(bs.rawscore)
+FROM bowlers AS b
+INNER JOIN teams AS t
+ON t.captainid = b.bowlerid
+INNER JOIN bowler_scores AS bs
+ON bs.bowlerid = b.bowlerid
+GROUP BY b.bowlerfirstname, b.bowlerlastname, bs.bowlerid, b.teamid, b.bowlerid
+HAVING MAX(bs.rawscore) > ALL
+(SELECT MAX(bs2.rawscore)
+FROM bowler_scores AS bs2
+INNER JOIN bowlers AS b2
+ON bs.bowlerid = bs2.bowlerid
+WHERE (b.teamid = b2.teamid) AND (b.bowlerid <> b2.bowlerid));
+
+/* “2. “Display for each bowler the bowler name and the average of the bowler’s raw game
+               scores for bowlers whose average is greater than 155.”*/
+SELECT b.bowlerfirstname, b.bowlerlastname, ROUND(AVG(bs.rawscore), 2)
+FROM bowlers AS b
+INNER JOIN bowler_scores AS bs
+ON bs.bowlerid = b.bowlerid
+GROUP BY b.bowlerfirstname, b.bowlerlastname
+HAVING AVG(bs.rawscore) > 155
+ORDER BY 3 DESC;
+
+/* “3. “List the last name and first name of every bowler whose average raw score is greater
+               than or equal to the overall average score.”*/
+SELECT b.bowlerfirstname AS first_name, b.bowlerlastname AS last_name, ROUND(AVG(bs.rawscore), 2) AS avg_score
+FROM bowlers AS b
+INNER JOIN bowler_scores AS bs
+ON bs.bowlerid = b.bowlerid
+GROUP BY b.bowlerfirstname, b.bowlerlastname
+HAVING AVG(bs.rawscore) > 
+(SELECT AVG(rawscore)
+FROM bowler_scores);
