@@ -79,3 +79,33 @@ FULL OUTER JOIN faculty_classes AS fc
 ON fc.staffid = f.staffid
 GROUP BY stffirstname, stflastname) AS t
 ORDER BY 3 DESC;
+
+
+--- BOWLING LEAGUE DATABASE ---
+
+/* “1. “Display for each bowler the bowler name and the average of the bowler’s raw game
+               scores.”*/
+SELECT bowlerfirstname || ' ' || bowlerlastname AS bowler, ROUND(AVG(rawscore), 2) AS avg_raw_score
+FROM bowlers AS b
+INNER JOIN bowler_scores AS bs
+ON bs.bowlerid = b.bowlerid
+GROUP BY bowlerfirstname, bowlerlastname
+ORDER BY 2 DESC;
+
+/* “2. “Calculate the current average and handicap for each bowler.”*/
+SELECT bowlerfirstname, bowlerlastname,
+(0.9*(200 - AVG(rawscore)))::integer AS handicap
+FROM bowlers AS b
+INNER JOIN bowler_scores AS bs
+ON bs.bowlerid = b.bowlerid
+GROUP BY bowlerfirstname, bowlerlastname
+ORDER BY 3;
+
+/* “3. Challenge: “Display the highest raw score for each bowler,” but solve it by using a subquery.”*/
+SELECT bowlers.bowlerfirstname, bowlers.bowlerlastname,
+(SELECT MAX(rawscore)
+FROM bowler_scores AS bs
+INNER JOIN bowlers AS b
+ON b.bowlerid = bs.bowlerid
+WHERE b.bowlerid = bs.bowlerid) AS max_score
+FROM bowlers;
