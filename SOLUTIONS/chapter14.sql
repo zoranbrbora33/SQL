@@ -112,3 +112,9 @@ GROUP BY c.categorydescription
 HAVING COUNT(sub.categoryid) < 3;
 
 /* “4. “Count the classes taught by every staff member.”*/
+SELECT s.stffirstname, s.stflastname, COUNT(classid)
+FROM staff AS s
+LEFT JOIN faculty_classes AS fc
+ON fc.staffid = s.staffid
+GROUP BY s.stffirstname, s.stflastname
+ORDER BY 3 DESC;
