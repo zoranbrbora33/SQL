@@ -35,3 +35,15 @@ GROUP BY v.vendname) AS t
 ORDER BY 2 DESC;
 
 
+--- ENTERTAINMENT DATABASE ---
+
+/* “1. “Show each agent’s name, the sum of the contract price for the engagements booked,
+               and the agent’s total commission.”*/
+SELECT agtfirstname || ' ' || agtlastname AS agent, SUM(contractprice) as total_contract,
+CAST(SUM(contractprice) * commissionrate AS numeric(10,2)) AS total_commission
+FROM agents AS a
+INNER JOIN engagements AS e
+ON e.agentid = a.agentid
+GROUP BY agtfirstname, agtlastname, commissionrate;
+
+
