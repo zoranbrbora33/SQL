@@ -68,3 +68,47 @@ ON e.agentid = a.agentid
 GROUP BY agtfirstname, agtlastname
 HAVING SUM(contractprice * commissionrate) > 1000
 ORDER BY 4 DESC;
+
+
+
+--- SCHOOL DATABASE ---
+
+/* “1. “Display by category the category name and the count of classes offered for those
+               categories that have three or more classes.”*/
+SELECT ca.categorydescription, COUNT(cl.classid) 
+FROM categories AS ca
+INNER JOIN subjects AS sub
+ON sub.categoryid = ca.categoryid
+INNER JOIN classes AS cl
+ON cl.subjectid = sub.subjectid
+GROUP BY ca.categorydescription
+HAVING COUNT(cl.classid) >= 3
+ORDER BY 2 DESC;
+
+/* “2. “List each staff member and the count of classes each is scheduled to teach for those
+               staff members who teach fewer than three classes.”*/
+SELECT stffirstname, stflastname, COUNT(classid)
+FROM staff AS s
+FULL JOIN faculty_classes AS fc
+ON s.staffid = fc.staffid
+GROUP BY stffirstname, stflastname
+HAVING COUNT(classid) < 3;
+
+/* “3. “Show me the subject categories that have fewer than three full professors teaching
+               that subject.”*/
+SELECT c.categorydescription, 
+COUNT(sub.categoryid) AS professors
+FROM
+(SELECT c.categoryid
+FROM faculty AS f
+INNER JOIN faculty_categories AS fc
+ON f.staffid = fc.staffid
+INNER JOIN categories AS c
+ON c.categoryid = fc.Categoryid
+WHERE f.Title = 'Professor') AS sub
+FULL JOIN categories AS c
+    ON c.CategoryID = sub.categoryid
+GROUP BY c.categorydescription
+HAVING COUNT(sub.categoryid) < 3;
+
+/* “4. “Count the classes taught by every staff member.”*/
