@@ -158,3 +158,31 @@ GROUP BY b.bowlerfirstname, b.bowlerlastname
 HAVING AVG(bs.rawscore) > 
 (SELECT AVG(rawscore)
 FROM bowler_scores);
+
+
+--- RECIPES DATABASE ---
+
+/* “1. “Sum the amount of salt by recipe class, and display those recipe classes that require
+               more than three teaspoons.”*/
+FROM
+(SELECT rc.recipeclassdescription AS recipe_class, SUM(ri.amount) AS sum_salt
+FROM recipe_classes AS rc
+INNER JOIN recipes AS r
+ON r.recipeclassid = rc.recipeclassid
+INNER JOIN recipe_ingredients AS ri
+ON ri.recipeid = r.recipeid
+INNER JOIN ingredients AS i
+ON i.ingredientid = ri.ingredientid
+INNER JOIN measurements AS m
+ON m.measureamountid = i.measureamountid
+WHERE i.ingredientname = 'Salt' AND m.measurementdescription = 'Teaspoon'
+GROUP BY rc.recipeclassdescription
+HAVING SUM(ri.amount) > 3) AS recipe_class;
+
+/* “2. “For what class of recipe do I have two or more recipes?”*/
+SELECT recipeclassdescription AS recipe_class, COUNT(r.recipeid) 
+FROM recipe_classes AS rc
+INNER JOIN recipes AS r
+ON r.recipeclassid = rc.recipeclassid
+GROUP BY recipeclassdescription
+HAVING COUNT(r.recipeid) >= 2;
