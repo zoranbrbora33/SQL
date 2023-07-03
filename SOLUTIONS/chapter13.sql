@@ -109,3 +109,53 @@ INNER JOIN bowlers AS b
 ON b.bowlerid = bs.bowlerid
 WHERE b.bowlerid = bs.bowlerid) AS max_score
 FROM bowlers;
+
+
+--- RECIPES DATABASE ---
+
+/* “1. “If I want to cook all the recipes in my cookbook, how much of each ingredient must
+               I have on hand?”*/
+SELECT i.ingredientname, m.measurementdescription, SUM(ri.measureamountid)
+FROM recipe_ingredients AS ri
+LEFT JOIN ingredients AS i
+ON i.ingredientid = ri.ingredientid
+INNER JOIN measurements AS m
+ON m.measureamountid = ri.measureamountid
+GROUP BY i.ingredientname, m.measurementdescription
+ORDER BY 3 DESC;
+
+/* “2. “List all meat ingredients and the count of recipes that include each one.”*/
+
+--- returns 4 rows ---
+SELECT i.ingredientname AS meat_ingredient, COUNT(recipeid) AS num_of_recipes
+FROM recipe_ingredients AS ri
+INNER JOIN ingredients AS i
+ON i.ingredientid = ri.ingredientid
+WHERE i.ingredientclassid = 2
+GROUP BY i.ingredientname;
+
+
+/* “3. Challenge: Now solve problem 2 by using a subquery.”*/
+
+--- returns 11 rows ---
+SELECT meat_ingredient, num_of_recipes
+FROM
+(SELECT i.ingredientname AS meat_ingredient, COUNT(recipeid) AS num_of_recipes
+FROM recipe_ingredients AS ri
+FULL OUTER JOIN ingredients AS i
+ON i.ingredientid = ri.ingredientid
+WHERE i.ingredientclassid = 2
+GROUP BY i.ingredientname) AS sub
+ORDER BY 2 DESC;
+
+/*“4. Can you explain why the subquery solution returns seven more rows? Is it possible
+            to modify the query in question 2 to return 11 rows? If so, how would you do it?”*/
+
+-- Answer: The INNER JOIN in question 2 eliminates NULL rows ---
+--- returns 11 rows ---
+SELECT i.ingredientname AS meat_ingredient, COUNT(recipeid) AS num_of_recipes
+FROM recipe_ingredients AS ri
+FULL JOIN ingredients AS i
+ON i.ingredientid = ri.ingredientid
+WHERE i.ingredientclassid = 2
+GROUP BY i.ingredientname;
