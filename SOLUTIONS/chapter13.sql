@@ -47,3 +47,35 @@ ON e.agentid = a.agentid
 GROUP BY agtfirstname, agtlastname, commissionrate;
 
 
+--- SCHOOL DATABASE ---
+
+/* “1. “Display by category the category name and the count of classes offered.”*/
+SELECT categorydescription, COUNT(classid)
+FROM categories cat
+INNER JOIN subjects AS s 
+ON s.categoryid = cat.categoryid
+INNER JOIN classes AS c
+ON c.subjectid = s.subjectid
+GROUP BY categorydescription;
+
+/* “2. “List each staff member and the count of classes each is scheduled to teach.”*/
+SELECT stffirstname AS firstname, stflastname AS lastname, COUNT(fc.classid) AS num_of_classes
+FROM staff AS s
+INNER JOIN faculty AS f 
+ON f.staffid = s.staffid
+INNER JOIN faculty_classes AS fc
+ON fc.staffid = f.staffid
+GROUP BY stffirstname, stflastname
+ORDER BY 3 DESC;
+
+/* “3. Challenge: Now solve problem 2 by using a subquery.”*/
+SELECT firstname, lastname, num_of_classes
+FROM
+(SELECT stffirstname AS firstname, stflastname AS lastname, COUNT(fc.classid) AS num_of_classes
+FROM staff AS s
+FULL OUTER JOIN faculty AS f 
+ON f.staffid = s.staffid
+FULL OUTER JOIN faculty_classes AS fc
+ON fc.staffid = f.staffid
+GROUP BY stffirstname, stflastname) AS t
+ORDER BY 3 DESC;
