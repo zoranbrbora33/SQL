@@ -45,3 +45,26 @@ HAVING COUNT(productnumber) = 1) AS sub;
 
 --- ENTERTAINMENT DATABASE ---
 
+/* “1. “Show me the entertainers who have more than two overlapped bookings.”*/
+SELECT entstagename
+FROM entertainers
+WHERE entertainerid IN
+(SELECT eng1.entertainerid
+FROM engagements AS eng1
+INNER JOIN engagements AS eng2
+ON eng2.entertainerid = eng1.entertainerid
+WHERE (eng1.startdate <= eng2.enddate) AND (eng1.enddate >= eng2.startdate)
+AND(eng1.engagementnumber <> eng2.engagementnumber)
+GROUP BY eng1.entertainerid
+HAVING eng1.entertainerid > 2);
+
+/* “2. “Show each agent’s name, the sum of the contract price for the engagements booked,
+               and the agent’s total commission for agents whose total commission is more than $1,000.”*/
+SELECT agtfirstname, agtlastname, SUM(contractprice) AS total_contract,
+ROUND(SUM(contractprice * commissionrate)::integer, 2)
+FROM agents AS a
+INNER JOIN engagements AS e
+ON e.agentid = a.agentid
+GROUP BY agtfirstname, agtlastname
+HAVING SUM(contractprice * commissionrate) > 1000
+ORDER BY 4 DESC;
