@@ -53,3 +53,28 @@ WHERE memberid NOT IN
 (SELECT memberid
 FROM entertainers);
 
+
+--- SCHOOL DATABASE ---
+
+/* “1. “Delete all students who are not registered for any class.”*/
+DELETE FROM students
+WHERE studentid IN
+(SELECT studentid
+FROM student_schedules
+WHERE studentid NOT IN
+	(SELECT studentid
+	FROM student_schedules AS sc
+	WHERE classstatus  IN (1)));
+
+/* “2. “Delete subjects that have no classes.”*/
+DELETE FROM faculty_subjects
+WHERE subjectid NOT IN
+(SELECT subjectid 
+FROM classes);
+
+DELETE subjectid 
+FROM subjects
+WHERE subjectprereq IS NULL
+AND subjectid NOT IN
+(SELECT subjectid
+FROM classes);
