@@ -136,3 +136,46 @@ INNER JOIN products AS p
 ON p.productnumber = pv.productnumber
 WHERE p.categoryid IN (5))
 ORDER BY 1;
+
+
+--- ENTERTAINMENT DATABASE ---
+
+/* “1. “List the entertainers who play the Jazz, Rhythm and Blues, and Salsa styles.”*/
+--- longer solution --- 
+
+SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer 
+FROM entertainers AS e
+WHERE e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+INNER JOIN musical_styles AS ms
+ON ms.styleid = es.styleid
+WHERE ms.stylename = 'Jazz')
+AND e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+INNER JOIN musical_styles AS ms
+ON ms.styleid = es.styleid
+WHERE ms.stylename = 'Rhythm and Blues')
+AND e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+INNER JOIN musical_styles AS ms
+ON ms.styleid = es.styleid
+WHERE ms.stylename = 'Salsa')
+
+--- shorter solution ---
+SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer 
+FROM entertainers AS e
+WHERE e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+WHERE es.styleid = 15)
+AND e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+WHERE es.styleid = 19)
+AND e.entertainerid IN
+(SELECT es.entertainerid
+FROM entertainer_styles AS es
+WHERE es.styleid = 24)
