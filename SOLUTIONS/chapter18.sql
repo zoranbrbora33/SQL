@@ -179,3 +179,15 @@ AND e.entertainerid IN
 (SELECT es.entertainerid
 FROM entertainer_styles AS es
 WHERE es.styleid = 24)
+
+--- solution using GROUP BY and HAVING ---
+SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer,
+COUNT(e.entertainerid) AS num_of_styles
+FROM entertainers AS e
+INNER JOIN entertainer_styles AS es
+ON es.entertainerid = e.entertainerid
+INNER JOIN musical_styles AS ms 
+ON ms.styleid = es.styleid
+WHERE ms.stylename IN ('Jazz', 'Rhythm and Blues', 'Salsa')
+GROUP BY e.entertainerid, e.entstagename
+HAVING COUNT(e.entertainerid) = 3;
