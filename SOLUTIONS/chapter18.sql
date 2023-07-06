@@ -191,3 +191,13 @@ ON ms.styleid = es.styleid
 WHERE ms.stylename IN ('Jazz', 'Rhythm and Blues', 'Salsa')
 GROUP BY e.entertainerid, e.entstagename
 HAVING COUNT(e.entertainerid) = 3;
+
+/* “2. “Show the entertainers who did not have a booking in the 90 days preceding May 1,
+               2018.”*/
+SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer
+FROM entertainers AS e
+WHERE e.entertainerid NOT IN
+(SELECT eng.entertainerid
+FROM engagements AS eng
+WHERE (startdate >= '2018-05-01'::date - INTERVAL '90 days'
+AND startdate < '2018-05-01'::date) AND startdate IS NOT NULL);
