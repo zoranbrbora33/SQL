@@ -113,3 +113,26 @@ ON p.productnumber = od.productnumber
 WHERE p.productname  LIKE '%Helmet'
 AND od.ordernumber = o.ordernumber)
 ORDER BY 1;
+
+/* “5. “Show the vendors who sell accessories, car racks, and clothing.”*/
+SELECT v.vendorid AS vendor_id, v.vendname AS vendor 
+FROM vendors AS v
+WHERE v.vendorid IN
+(SELECT pv.vendorid
+FROM product_vendors AS pv
+INNER JOIN products AS p 
+ON p.productnumber = pv.productnumber
+WHERE p.categoryid IN (1))
+AND v.vendorid IN
+(SELECT pv.vendorid
+FROM product_vendors AS pv
+INNER JOIN products AS p 
+ON p.productnumber = pv.productnumber
+WHERE p.categoryid IN (3))
+AND v.vendorid IN
+(SELECT pv.vendorid
+FROM product_vendors AS pv
+INNER JOIN products AS p 
+ON p.productnumber = pv.productnumber
+WHERE p.categoryid IN (5))
+ORDER BY 1;
