@@ -70,3 +70,22 @@ ON od.ordernumber = o.ordernumber
 INNER JOIN products AS p
 ON p.productnumber = od.productnumber
 WHERE p.productname LIKE '%Helmet%');
+
+/* “3. “Show me the customer orders that have a bike but do not have a helmet.”*/
+SELECT o.ordernumber, o.orderdate, o.shipdate, o.customerid, o.employeeid
+FROM orders AS o
+WHERE EXISTS
+(SELECT od.ordernumber
+FROM order_details AS od
+INNER JOIN products AS p
+ON p.productnumber = od.productnumber
+WHERE p.productname LIKE '%Bike'
+AND od.ordernumber = o.ordernumber)
+AND NOT EXISTS
+(SELECT od.ordernumber
+FROM order_details AS od
+INNER JOIN products AS p
+ON p.productnumber = od.productnumber
+WHERE p.productname  LIKE '%Helmet'
+AND od.ordernumber = o.ordernumber)
+ORDER BY 1;
