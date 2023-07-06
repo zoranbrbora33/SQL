@@ -141,8 +141,8 @@ ORDER BY 1;
 --- ENTERTAINMENT DATABASE ---
 
 /* “1. “List the entertainers who play the Jazz, Rhythm and Blues, and Salsa styles.”*/
---- longer solution --- 
 
+--- longer solution --- 
 SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer 
 FROM entertainers AS e
 WHERE e.entertainerid IN
