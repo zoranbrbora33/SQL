@@ -89,3 +89,27 @@ ON p.productnumber = od.productnumber
 WHERE p.productname  LIKE '%Helmet'
 AND od.ordernumber = o.ordernumber)
 ORDER BY 1;
+
+/* “4. “Display the customers and their orders that have a bike and a helmet in the same
+               order.”*/
+SELECT c.customerid AS customer_id, 
+(c.custfirstname || ' ' || c.custlastname) AS full_name,
+o.ordernumber AS order_number
+FROM orders AS o
+INNER JOIN customers AS c
+ON c.customerid = o.customerid
+WHERE EXISTS
+(SELECT od.ordernumber
+FROM order_details AS od
+INNER JOIN products AS p
+ON p.productnumber = od.productnumber
+WHERE p.productname LIKE '%Bike'
+AND od.ordernumber = o.ordernumber)
+AND EXISTS
+(SELECT od.ordernumber
+FROM order_details AS od
+INNER JOIN products AS p
+ON p.productnumber = od.productnumber
+WHERE p.productname  LIKE '%Helmet'
+AND od.ordernumber = o.ordernumber)
+ORDER BY 1;
