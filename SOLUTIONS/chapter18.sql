@@ -201,3 +201,16 @@ WHERE e.entertainerid NOT IN
 FROM engagements AS eng
 WHERE (startdate >= '2018-05-01'::date - INTERVAL '90 days'
 AND startdate < '2018-05-01'::date) AND startdate IS NOT NULL);
+
+/* “3. “Display the customers who have not booked Topazz or Modern Dance.”*/
+SELECT c.customerid AS customer_id, c.custfirstname AS first_name,
+c.custlastname AS lastname 
+FROM customers AS c
+WHERE c.customerid NOT IN
+(SELECT e.customerid
+FROM engagements AS e
+WHERE e.entertainerid = 1002)
+AND c.customerid NOT IN
+(SELECT e.customerid
+FROM engagements AS e
+WHERE e.entertainerid = 1006);
