@@ -214,3 +214,28 @@ AND c.customerid NOT IN
 (SELECT e.customerid
 FROM engagements AS e
 WHERE e.entertainerid = 1006);
+
+/* “4. “List the entertainers who have performed for Hartwig, McCrae, and Rosales.”*/
+SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer
+FROM entertainers AS e
+WHERE EXISTS
+(SELECT eng.entertainerid
+FROM engagements AS eng
+INNER JOIN customers AS c
+ON c.customerid = eng.customerid
+WHERE c.custlastname LIKE '%Hartwig'
+AND e.entertainerid = eng.entertainerid)
+AND EXISTS
+(SELECT eng.entertainerid
+FROM engagements AS eng
+INNER JOIN customers AS c
+ON c.customerid = eng.customerid
+WHERE c.custlastname LIKE '%McCrae'
+AND e.entertainerid = eng.entertainerid)
+AND EXISTS
+(SELECT eng.entertainerid
+FROM engagements AS eng
+INNER JOIN customers AS c
+ON c.customerid = eng.customerid
+WHERE c.custlastname LIKE '%Rosales'
+AND e.entertainerid = eng.entertainerid);
