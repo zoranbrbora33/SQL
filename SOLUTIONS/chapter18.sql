@@ -239,3 +239,17 @@ INNER JOIN customers AS c
 ON c.customerid = eng.customerid
 WHERE c.custlastname LIKE '%Rosales'
 AND e.entertainerid = eng.entertainerid);
+
+/* “5A. “Display the customers who have never booked an entertainer.”*/
+SELECT c.customerid AS customer_id, c.custfirstname AS first_name, c.custlastname AS last_name 
+FROM customers AS c
+WHERE c.customerid NOT IN
+(SELECT eng.customerid
+FROM engagements AS eng);
+
+/* 5B. “Show the entertainers who have no bookings.”*/
+SELECT e.entertainerid AS entertainer_id, e.entstagename AS entertainer
+FROM entertainers AS e
+WHERE e.entertainerid NOT IN
+(SELECT eng.entertainerid
+FROM engagements AS eng);
