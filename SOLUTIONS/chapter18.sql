@@ -253,3 +253,33 @@ FROM entertainers AS e
 WHERE e.entertainerid NOT IN
 (SELECT eng.entertainerid
 FROM engagements AS eng);
+
+
+--- SCHOOL DATABASE ---
+
+/* “1. “Show students who have a grade of 85 or better in both Art and Computer Science.”*/
+SELECT studentid AS student_id, studfirstname AS first_name, 
+studlastname AS last_name
+FROM students 
+WHERE EXISTS
+(SELECT student_schedules.studentid
+FROM student_schedules
+INNER JOIN classes
+ON classes.classid = student_schedules.classid
+INNER JOIN subjects
+ON subjects.subjectid = classes.subjectid
+INNER JOIN categories 
+ON categories.categoryid = subjects.categoryid
+WHERE (categories.categorydescription = 'Art' AND student_schedules.grade >= 85)
+AND student_schedules.studentid = students.studentid)
+AND EXISTS
+(SELECT student_schedules.studentid
+FROM student_schedules
+INNER JOIN classes
+ON classes.classid = student_schedules.classid
+INNER JOIN subjects
+ON subjects.subjectid = classes.subjectid
+INNER JOIN categories 
+ON categories.categoryid = subjects.categoryid
+WHERE (categories.categorydescription LIKE '%Computer%' AND student_schedules.grade >= 85)
+AND student_schedules.studentid = students.studentid);
