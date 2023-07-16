@@ -52,3 +52,64 @@ SELECT bowlerfirstname || ' ' || bowlerlastname AS member, bowlerphonenumber AS 
 /* “3. “Give me a listing of each team’s lineup.”*/
 SELECT bowlerfirstname || ' ' || bowlerlastname AS bowler, teamid AS team FROM bowlers
 ORDER BY teamid, bowlerfirstname;
+
+
+--- MY SAMPLE STATEMENTS SOLUTIONS ---
+
+--- SALES DATABASE ---
+
+/* “What is the inventory value of each product?”*/
+SELECT productname AS product, 
+retailprice * quantityonhand AS inventory_value
+FROM products;
+
+/* “How many days elapsed between the order date and the ship date for each order?”*/
+SELECT ordernumber, shipdate - orderdate AS days_elapsed
+FROM orders;
+
+
+--- ENTERTAINMENT DATABASE ---
+
+/* “How long is each engagement due to run?”*/
+SELECT engagementnumber, 
+CAST(CAST(enddate - startdate AS INTEGER) + 1 AS CHARACTER) || 'day(s)' AS due_to_run
+FROM engagements;
+
+/* “What is the net amount for each of our contracts?”*/
+SELECT contractprice * 0.12 AS our_fee,
+contractprice - (contractprice * 0.12) AS net_fee
+FROM engagements;
+
+
+--- SCHOOL DATABASE ---
+
+/* “List how many complete years each staff member has been with the school as of October
+               1, 2017, and sort the result by last name and first name.”*/
+SELECT stffirstname, stflastname, 
+CAST(CAST('2017-10-01' - datehired AS INTEGER) / 365 AS INTEGER)
+FROM staff
+ORDER BY stflastname, stffirstname;
+
+/* “Show me a list of staff members, their salaries, and a proposed 7 percent bonus for
+            each staff member.”*/
+SELECT stffirstname AS first_name, 
+stflastname AS last_name, salary, salary * 0.07 AS bonus
+FROM staff
+ORDER BY stflastname;
+
+
+--- BOWLING DATABASE ---
+
+/* “Display a list of all bowlers and addresses formatted suitably for a mailing list,
+               sorted by ZIP Code.”*/
+SELECT CONCAT(bowlerlastname,' ', bowlerfirstname) AS bowler,
+bowleraddress AS address,
+CONCAT(bowlercity, ', ', bowlerstate, ' ', bowlerzip) AS city_zip,
+bowlerzip AS zip_code
+FROM bowlers;
+
+/* “What was the point spread between a bowler’s handicap and raw score for each match
+            and game played?”*/
+SELECT bowlerid, matchid, gamenumber, handicapscore, rawscore,
+handicapscore - rawscore AS point_difference
+FROM bowler_scores;
