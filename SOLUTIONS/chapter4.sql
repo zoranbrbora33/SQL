@@ -60,3 +60,73 @@ SELECT  ingredientname AS ingredient FROM ingredients;
 SELECT * FROM recipes
 ORDER BY recipetitle;
 
+
+--- MY SAMPLE STATEMENTS SOLUTIONS ---
+
+--- SALES DATABASE ---
+
+/* “Show me the names of all our vendors.”*/
+SELECT vendname AS vendors 
+FROM vendors;
+
+/* “What are the names and prices of all the products we carry?”*/
+SELECT productname AS product, retailprice AS price 
+FROM products;
+
+/* “Which states do our customers come from?”*/
+SELECT DISTINCT custstate AS state
+FROM customers;
+
+
+--- ENTERTAINMENT DATABASE ---
+
+/* “List all entertainers and the cities they’re based in, and sort the results by city
+               and name in ascending order.”*/
+SELECT entstagename AS entertainer, entcity AS city
+FROM entertainers
+ORDER BY city, entertainer;
+
+/* “Give me a unique list of engagement dates. I’m not concerned with how many engagements
+            there are per date.”*/
+SELECT DISTINCT startdate 
+FROM engagements;
+
+
+--- SCHOOL DATABASE ---
+
+/* “Can we view complete class information?”*/
+SELECT *
+FROM classes;
+
+/* “Give me a list of the buildings on campus and the number of floors for each building.
+            Sort the list by building in ascending order.”*/
+SELECT buildingname AS building, numberoffloors AS num_of_floors
+FROM buildings
+ORDER BY building;
+
+
+--- BOWLING DATABASE ---
+
+/* “Where are we holding our tournaments?”*/
+SELECT DISTINCT tourneylocation AS tournaments
+FROM tournaments;
+
+/* “Give me a list of all tournament dates and locations. I need the dates in descending
+               order and the locations in alphabetical order.”*/
+SELECT tourneydate AS date,tourneylocation AS location
+FROM tournaments
+ORDER BY date DESC, location;
+
+
+--- RECIPES DATABASE ---
+
+/* “What types of recipes do we have, and what are the names of the recipes we have for
+               each type? Can you sort the information by type and recipe name?”*/
+SELECT recipeclassid AS recipe_id, recipetitle AS recipe
+FROM recipes
+ORDER BY recipe_id, recipe;
+
+/* “Show me a list of unique recipe class IDs in the recipes table.”*/
+SELECT DISTINCT recipeclassid AS recipe_id
+FROM recipes
+ORDER BY recipe_id;
