@@ -182,3 +182,53 @@ INNER JOIN
   WHERE recipe_ingredients.ingredientid = 9
 ) AS garlic
 ON beef.recipeid = garlic.recipeid;
+
+
+--- MY SAMPLE STATEMENTS SOLUTIONS ---
+
+--- SALES DATABASE ---
+
+/* “Display all products and their categories.”*/
+SELECT productname AS product, categorydescription AS product_category
+FROM products AS p
+INNER JOIN categories AS c
+ON p.categoryid = c.categoryid;
+
+
+--- ENTERTAINER DATABASE ---
+
+/* “Show me entertainers, the start and end dates of their contracts, and the contract
+               price.”*/
+SELECT entstagename AS entertainer, startdate AS start_date, 
+enddate AS end_date, contractprice AS price
+FROM entertainers AS e
+INNER JOIN engagements AS eng
+ON e.entertainerid = eng.entertainerid;
+
+
+--- SCHOOL DATABASE ---
+
+/* “List the subjects taught on Wednesday.”*/
+SELECT DISTINCT subjectname AS subject 
+FROM subjects AS s
+INNER JOIN classes AS c
+ON s.subjectid = c.subjectid
+WHERE wednesdayschedule = 1;
+
+
+--- BOWLING DATABASE ---
+
+/* “Display bowling teams and the name of each team captain.”*/
+SELECT teamname AS team, CONCAT(bowlerfirstname, ' ', bowlerlastname) AS team_captain
+FROM teams AS t
+INNER JOIN bowlers AS b
+ON t.captainid = b.bowlerid;
+
+--- RECIPES DATABASE ---
+
+/* “Show me the recipes that have beef or garlic.”*/
+SELECT DISTINCT recipetitle AS recipe 
+FROM recipes AS r
+INNER JOIN recipe_ingredients AS ri
+ON ri.recipeid = r.recipeid
+WHERE ingredientid IN (1, 9);
