@@ -194,6 +194,17 @@ FROM products AS p
 INNER JOIN categories AS c
 ON p.categoryid = c.categoryid;
 
+/* “Find all the customers who have ever ordered a bicycle helmet.”*/
+SELECT DISTINCT CONCAT(custfirstname, ' ', custlastname) AS customer
+FROM customers AS c
+INNER JOIN orders AS o
+ON o.customerid = c.customerid
+INNER JOIN order_details AS od
+ON od.ordernumber = o.ordernumber
+INNER JOIN products AS p
+ON p.productnumber = od.productnumber
+WHERE p.productname LIKE '%Helmet%';
+
 
 --- ENTERTAINER DATABASE ---
 
@@ -204,6 +215,15 @@ enddate AS end_date, contractprice AS price
 FROM entertainers AS e
 INNER JOIN engagements AS eng
 ON e.entertainerid = eng.entertainerid;
+
+/* “Find the entertainers who played engagements for customers Berg or Hallmark.”*/
+SELECT DISTINCT entstagename AS entertainer
+FROM entertainers AS e
+INNER JOIN engagements AS eng
+ON eng.entertainerid = e.entertainerid
+INNER JOIN customers AS c
+ON c.customerid = eng.customerid
+WHERE c.custlastname IN ('Berg', 'Hallmark');
 
 
 --- SCHOOL DATABASE ---
@@ -224,6 +244,24 @@ FROM teams AS t
 INNER JOIN bowlers AS b
 ON t.captainid = b.bowlerid;
 
+/* “List all the tournaments, the tournament matches, and the game results.”*/
+SELECT tourneylocation AS tournament, tm.matchid AS match, tm.lanes,
+oddteam.teamname AS odd_lane_team, eventeam.teamname AS even_lane_team,
+match_games.gamenumber AS gamenumber,
+winning_team.teamname AS winner
+FROM tournaments AS t
+INNER JOIN tourney_matches AS tm
+ON tm.tourneyid = t.tourneyid
+INNER JOIN teams AS oddteam
+ON oddteam.teamid = tm.oddlaneteamid
+INNER JOIN teams AS eventeam
+ON eventeam.teamid = tm.evenlaneteamid
+INNER JOIN match_games
+ON match_games.matchid = tm.matchid
+INNER JOIN teams AS winning_team
+ON winning_team.teamid = match_games.winningteamid;
+
+
 --- RECIPES DATABASE ---
 
 /* “Show me the recipes that have beef or garlic.”*/
@@ -232,3 +270,12 @@ FROM recipes AS r
 INNER JOIN recipe_ingredients AS ri
 ON ri.recipeid = r.recipeid
 WHERE ingredientid IN (1, 9);
+
+/* “Show me the main course recipes and list all the ingredients.”*/
+SELECT recipetitle AS recipe, ingredientname AS ingredient
+FROM recipes AS r
+INNER JOIN recipe_ingredients AS ri
+ON ri.recipeid = r.recipeid
+INNER JOIN ingredients AS i
+ON i.ingredientid = ri.ingredientid
+WHERE r.recipeclassid = 1;
